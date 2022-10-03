@@ -3,67 +3,79 @@
 
 {%block body%}
 
-  <div class="container">
-    <h1>Lista Empleados</h1>
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#formModal">
-        Nuevo Empleado
-      </button>
-    <table class="table table-responsive table-hover table-sm">
-        <thead>
-          <tr class="text-center">
-            <th>Foto</th>
-            <th>Dni</th>
-            <th>Nombres</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for empleado in empleados%}
-          <tr class="text-center">
-            <th>{{empleado.3}}</th>
-            <td>{{empleado.0}}</td>
-            <td>{{empleado.1}}</td>
-            <td>
-                <button type="button" href="#" class="btn btn-warning btn-sm m-2"> Editar</button>
-                <button type="button" href="#" class="btn btn-danger btn-sm"> Eliminar</button>
-            </td>
-          </tr>
-          {%endfor%}
-        </tbody>
-      </table>
-
+<div class="container">
+  <h1>Lista Empleados</h1>
+  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#formModal">
+    Nuevo Empleado
+  </button>
+  {%with messages = get_flashed_messages()%}
+  {%if messages%}
+  {% for message in messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-       
-          <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Nuevo Empleado</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{url_for('insertarEmpleado')}}"  method="post" enctype="multipart/form-data">
-                        <div class="mb-3">
-                          <label for="dni" class="form-label">Dni</label>
-                          <input type="text" class="form-control" name="dni" id="dni" >
-                        </div>
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control"  name="nombre" id="nombre" >
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" id="email" >
-                        </div>
-                        <div class="mb-3">
-                            <label for="foto" class="form-label">Foto</label>
-                            <input type="file" class="form-control" name="foto" id="foto" >
-                        </div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                      </form>
-                </div>
-                
-              </div>
-            </div>
+  {%endfor%}
+  {%endif%}
+  {%endwith%}
+  <table class="table table-responsive table-hover table-sm">
+    <thead>
+      <tr class="text-center">
+        <th>Foto</th>
+        <th>Dni</th>
+        <th>Nombres</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for empleado in empleados%}
+      <tr class="text-center">
+        <th>
+          <img class="img-thumbnail" width="100" src="uploads/{{empleado.3}}">
+        </th>
+        <td>{{empleado.0}}</td>
+        <td>{{empleado.1}}</td>
+        <td>
+          <a type="button" href="#" class="btn btn-warning btn-sm m-2"> Editar</a>
+          <a type="button" href="/eliminarEmpleado/{{empleado.0}}" class="btn btn-danger btn-sm"> Eliminar</a>
+        </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+
+</div>
+
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo Empleado</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{url_for('insertarEmpleado')}}" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="dni" class="form-label">Dni</label>
+            <input type="text" class="form-control" name="dni" id="dni">
           </div>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre">
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" id="email">
+          </div>
+          <div class="mb-3">
+            <label for="foto" class="form-label">Foto</label>
+            <input type="file" class="form-control" name="foto" id="foto">
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
 {%endblock%}

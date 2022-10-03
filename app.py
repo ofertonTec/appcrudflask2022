@@ -1,7 +1,11 @@
-from flask import Flask, render_template, url_for, redirect,request
+from flask import Flask, render_template, url_for,request,redirect,flash
 from flask_cors import CORS
 from flask_mysqldb import MySQL
-
+#INICIO: mostrar foto
+from datetime import datetime
+from flask import send_from_directory
+import os
+#FIN: mostrar foto
 
 app= Flask(__name__)
 app.secret_key = 'many random bytes'
@@ -15,11 +19,20 @@ app.config['MYSQL_USER'] = 'b8e78062f3909c'
 app.config['MYSQL_PASSWORD'] = '64532001'
 app.config['MYSQL_DB'] = 'heroku_631eb2166968388'
 CORS(app)
+
+#INICIO: Mostrar la foto
+CARPETA= os.path.join('uploads')
+app.config['CARPETA']=CARPETA
+@app.route('/uploads/<nombreFoto>')
+def uploads(nombreFoto):
+    return send_from_directory(app.config['CARPETA'],nombreFoto)
+#FIN: Mostrar la foto 
+
 mysql= MySQL(app)
 @app.route('/')
 def iniciarApp():
     return render_template('inicio.html')
-
+#INICIO: Listar Empleados
 @app.route('/empleado', methods =['GET'])
 def mostrarEmpleados():
     cursor =mysql.connection.cursor()
@@ -27,7 +40,9 @@ def mostrarEmpleados():
     data = cursor.fetchall()
     cursor.close()
     return render_template('empleados/empleado.html', empleados=data)
+#FIN: Listar Empleados
 
+#INICIO: Crear nuevo empleado
 @app.route('/NuevoEmpleado',  methods=['POST'])
 def insertarEmpleado():
     if request.method=="POST":
@@ -35,10 +50,28 @@ def insertarEmpleado():
         nombre=request.form['nombre']
         email=request.form['email']
         foto=request.files['foto']
+        now= datetime.now()
+        tiempo=now.strftime("%Y%H%M%S")
+        if foto.filename !='':
+            nuevoNombreFoto=tiempo+foto.filename
+            foto.save("uploads/"+nuevoNombreFoto)
         cursor= mysql.connection.cursor()
-        cursor.execute('INSERT INTO empleado(DNI,NOMBRE,EMAIL,FOTO) VALUES(%s,%s,%s,%s)',(dni,nombre,email,foto.filename))
+        cursor.execute('INSERT INTO empleado(DNI,NOMBRE,EMAIL,FOTO) VALUES(%s,%s,%s,%s)',(dni,nombre,email,nuevoNombreFoto))
         mysql.connection.commit()
         return redirect('/empleado')
+
+#FIN: Crear nuevo empleado
+
+#INICIO: Eliminar empleado
+@app.route('/eliminarEmpleado/<string:dni>', methods=['GET'])
+def eliminarEmpleado(dni):
+    flash('Se elimino exitosamente el registro')
+    cursor=mysql.connection.cursor()
+    cursor.execute("DELETE FROM empleado  WHERE DNI = %s", (dni,))
+    mysql.connection.commit()
+    return redirect('/empleado') 
+
+#FIN: Eliminar empleado
 
 
 if __name__ == '__main__':
