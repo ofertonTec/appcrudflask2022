@@ -2,5 +2,27 @@
 {%block title%} Empleado {%endblock%}
 
 {%block body%}
-<h1>EMPLEADO</h1>
+<h1>Lista Empleados</h1>
+<div class="container">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">DNI</th>
+            <th scope="col">NOMBRE</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">FOTO</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for empleado in empleados%}
+          <tr>
+            <th>{{empleado.0}}</th>
+            <td>{{empleado.1}}</td>
+            <td>{{empleado.2}}</td>
+            <td>{{empleado.3}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+</div>
 {%endblock%}
