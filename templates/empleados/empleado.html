@@ -2,27 +2,31 @@
 {%block title%} Empleado {%endblock%}
 
 {%block body%}
-<h1>Lista Empleados</h1>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
-    Nuevo Empleado
-  </button>
+
   <div class="container">
-    <table class="table table-responsive table-hover">
+    <h1>Lista Empleados</h1>
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#formModal">
+        Nuevo Empleado
+      </button>
+    <table class="table table-responsive table-hover table-sm">
         <thead>
-          <tr>
-            <th>DNI</th>
-            <th>NOMBRE</th>
-            <th>EMAIL</th>
-            <th>FOTO</th>
+          <tr class="text-center">
+            <th>Foto</th>
+            <th>Dni</th>
+            <th>Nombres</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
             {% for empleado in empleados%}
-          <tr>
-            <th>{{empleado.0}}</th>
+          <tr class="text-center">
+            <th>{{empleado.3}}</th>
+            <td>{{empleado.0}}</td>
             <td>{{empleado.1}}</td>
-            <td>{{empleado.2}}</td>
-            <td>{{empleado.3}}</td>
+            <td>
+                <button type="button" href="#" class="btn btn-warning btn-sm m-2"> Editar</button>
+                <button type="button" href="#" class="btn btn-danger btn-sm"> Eliminar</button>
+            </td>
           </tr>
           {%endfor%}
         </tbody>
