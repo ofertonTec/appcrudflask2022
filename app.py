@@ -73,6 +73,30 @@ def eliminarEmpleado(dni):
 
 #FIN: Eliminar empleado
 
+#INICIO: Editar empleado
+@app.route('/actualizarEmpleado' , methods=['POST'])
+def actualizarEmpleado():
+    if request.method=='POST':
+        dni= request.form['dni']
+        nombre=request.form['nombre']
+        correo=request.form['email']
+        foto=request.files['foto']
+        cursor= mysql.connection.cursor()
+        now= datetime.now()
+        tiempo=now.strftime("%Y%H%M%S")
+        if foto.filename != '':
+            nuevoNombreFoto = tiempo +foto.filename
+            foto.save("uploads/{}".format(nuevoNombreFoto))
+            cursor.execute('SELECT foto FROM empleado WHERE dni={}'.format(dni))
+            fila =cursor.fetchall()
+            os.remove(os.path.join(app.config['CARPETA'],fila[0][0]))
+            cursor.execute('UPDATE empleado SET foto=%s WHERE dni=%s',(nuevoNombreFoto,dni))
+            mysql.connection.commit()
+        cursor.execute("UPDATE empleado SET  nombre=%s, email=%s  WHERE dni=%s",(nombre,correo,dni))
+        mysql.connection.commit()
+        flash('Datos actualizados correctamente')
+        return redirect('/empleado')
+#FIN: Editar empleado
 
 if __name__ == '__main__':
     app.run(debug=True)

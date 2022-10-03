@@ -36,10 +36,50 @@
         <td>{{empleado.0}}</td>
         <td>{{empleado.1}}</td>
         <td>
-          <a type="button" href="#" class="btn btn-warning btn-sm m-2"> Editar</a>
+          <a href="/editarEmpleado/{{empleado.0}}" type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+            data-bs-target="#editarEmpleado{{empleado.0}}">Editar</a>
           <a type="button" href="/eliminarEmpleado/{{empleado.0}}" class="btn btn-danger btn-sm"> Eliminar</a>
         </td>
       </tr>
+      <!--INCIO:Edit empleado-->
+      <div class="modal fade" id="editarEmpleado{{empleado.0}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Empleado</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{url_for('actualizarEmpleado')}}" enctype="multipart/form-data">
+                <input type="hidden" id="dni" value="{{empleado.0}}">
+                <div class="mb-3">
+                  <label for="dni" class="form-label">DNI</label>
+                  <input value="{{empleado.0}}" type="text" class="form-control" name="dni" id="dni" disabled>
+                  <input value="{{empleado.0}}" type="hidden" class="form-control" name="dni" id="dni">
+                </div>
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input value="{{empleado.1}}" type="text" class="form-control" name="nombre" id="nombre">
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input value="{{empleado.2}}" type="email" class="form-control" name="email" id="email">
+                </div>
+                <div class="mb-3">
+                  <label for="img" class="form-label">Foto</label>
+                  <input value="{{empleado.3}}" type="file" class="form-control" name="foto" id="img">
+                  <br>
+                  <img width="100" height="50px" class="img-thumbnail" src="{{url_for('uploads', nombreFoto=empleado.3)}}" alt="">
+                  <br>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Actualizar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--FIN:Edit empleado-->
       {%endfor%}
     </tbody>
   </table>
