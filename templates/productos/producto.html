@@ -48,7 +48,7 @@
     {% for producto in productos%}
     <div class="col">
       <div class="card h-100" id="img_card_header">
-        <img class=" card-img-top img-thumbnail" width="50px" height="50px" src="uploads/{{producto.3}}">
+        <img width="50" height="50" class=" card-img-top img-thumbnail"  src="uploads/{{producto.3}}">
         <a id="mostrar_detalle" type="button" class="btn btn-primary" data-link-action="quickview"
           data-bs-toggle="modal" data-bs-target="#detalleProducto{{producto.0}}">
           <i class="fa-solid fa-magnifying-glass"></i> Vista Previa
@@ -56,7 +56,6 @@
         <div class="card-body">
           <input type="hidden" value="{{producto.0}}">
           <h5 class="card-title">{{producto.1}}</h5>
-          <p id="scroll_descripcion" class="card-text">{{producto.2}}</p>
         </div>
       </div>
     </div>
@@ -67,24 +66,22 @@
         <div class="modal-content">
           <div class="modal-body">
             <input type="hidden" value="{{producto.0}}">
-            <form action="" method="post" enctype="multipart/form-data">
-              <div class="mb-3">
-                <img class="card-img-top img-thumbnail" src="uploads/{{producto.3}}">
+
+            <div class="card mb-3" style="max-width: 540px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img class="card-img-top img-thumbnail" src="uploads/{{producto.3}}">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{producto.1}}</h5>
+                    <p class="card-text">{{producto.2}}</p>
+                    <a type="button" class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al
+                      carrito</a>
+                  </div>
+                </div>
               </div>
-              <div class="mb-3">
-                <h1>{{producto.1}}</h1>
-              </div>
-              <div class="mb-3">
-                <label for="descripcion" class="form-label">Descripción</label>
-                <p id="descripcion">{{producto.2}}</p>
-              </div>
-              <div class="mb-3">
-                <label for="cantidad" class="form-label">Cantidad</label>
-                <input type="number" class="form-control" name="cantidad" id="cantidad">
-              </div>
-              <a type="button" class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al
-                carrito</a>
-            </form>
+            </div>
           </div>
 
         </div>

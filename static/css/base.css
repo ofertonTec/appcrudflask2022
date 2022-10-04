@@ -1,7 +1,7 @@
 #mostrar_detalle{
    display: none;
    position: absolute;
-   bottom: 5px;
+   bottom: 30%;
     
 }
 #img_card_header{
@@ -16,6 +16,10 @@
     display: flex;
     transition: 2s;
 }
+.img-thumbnail {
+    height: 80%;
+}
+
 
 
 
