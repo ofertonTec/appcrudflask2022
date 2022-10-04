@@ -8,6 +8,7 @@
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#formModalProducto">
     Nuevo Producto
   </button>
+  <!--INCIO: Nuevo producto-->
   <div class="modal fade" id="formModalProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -41,18 +42,59 @@
       </div>
     </div>
   </div>
+  <!--FIN: Nuevo producto-->
+
   <div class="row row-cols-2 row-cols-md-4 g-4 mb-3">
     {% for producto in productos%}
     <div class="col">
-      <div class="card h-100">
+      <div class="card h-100" id="img_card_header">
         <img class=" card-img-top img-thumbnail" width="50px" height="50px" src="uploads/{{producto.3}}">
+        <a id="mostrar_detalle" type="button" class="btn btn-outline-primary" data-link-action="quickview"
+          data-bs-toggle="modal" data-bs-target="#detalleProducto">
+          <i class="fa-solid fa-magnifying-glass"></i> Vista Previa
+        </a>
         <div class="card-body">
+          <input type="hidden" value="{{producto.0}}">
           <h5 class="card-title">{{producto.1}}</h5>
           <p class="card-text">{{producto.2}}</p>
         </div>
       </div>
-
     </div>
+    <!--INCIO:Detalle producto-->
+    <div class="modal fade" id="detalleProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" value="{{producto.0}}">
+            <form action="" method="post" enctype="multipart/form-data">
+              <div class="mb-3">
+                <img class="card-img-top img-thumbnail" src="uploads/{{producto.3}}">
+              </div>
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+               <h1>{{producto.1}}</h1>
+              </div>
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <p>{{producto.2}}</p>
+              </div>
+              <div class="mb-3">
+                <label for="cantidad" class="form-label">Cantidad</label>
+                <input type="number" class="form-control" name="cantidad" id="cantidad">
+              </div>
+              <a type="button" class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al
+                carrito</a>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--FIN: Detalle producto-->
     {% endfor %}
   </div>
 

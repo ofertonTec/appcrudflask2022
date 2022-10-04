@@ -1,0 +1,20 @@
+#mostrar_detalle{
+   display: none;
+   position: absolute;
+   bottom: 5px;
+    
+}
+#img_card_header{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#img_card_header:hover > #mostrar_detalle{
+    display: flex;
+    transition: 2s;
+
+}
+
