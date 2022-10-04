@@ -1,0 +1,82 @@
+{% extends './layout.html'%}
+{%block title%}Home {%endblock%}
+
+{%block body%}
+<div class="container">
+    
+    <br>
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#formModalProducto">
+        Nuevo Producto
+    </button>
+    <div class="modal fade" id="formModalProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{{url_for('insertarProducto')}}" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label for="codigo" class="form-label">Codigo Producto</label>
+                  <input type="text" class="form-control" name="codigo" id="codigo">
+                </div>
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" name="nombre" id="nombre">
+                </div>
+                <div class="mb-3">
+                  <label for="descripcion" class="form-label">Descripción</label>
+                  <textarea class="form-control" name="descripcion" placeholder="Descripción del producto" style="height: 100px"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="foto" class="form-label">Foto</label>
+                  <input type="file" class="form-control" name="foto" id="foto">
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </form>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+        {% for producto in productos%}
+        <div class="col">
+            <div class="card">
+                <img class=" card-img-top img-thumbnail" width="50px" height="50px" src="uploads/{{producto.3}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{producto.1}}</h5>
+                    <p class="card-text">{{producto.2}}</p>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="1000">
+                <img src="/static/img/slider3.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item " data-bs-interval="1000">
+                <img src="/static/img/slider2.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item " data-bs-interval="1000">
+                <img src="/static/img/slider1.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+{%endblock%}
