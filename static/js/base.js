@@ -1,2 +1,4 @@
-img= document.getElementById('img_card_header')
-console.log('CARGADO')
+texto_original= document.getElementById('scroll_descripcion').innerHTML
+
+
+

@@ -50,24 +50,21 @@
       <div class="card h-100" id="img_card_header">
         <img class=" card-img-top img-thumbnail" width="50px" height="50px" src="uploads/{{producto.3}}">
         <a id="mostrar_detalle" type="button" class="btn btn-outline-primary" data-link-action="quickview"
-          data-bs-toggle="modal" data-bs-target="#detalleProducto">
+          data-bs-toggle="modal" data-bs-target="#detalleProducto{{producto.0}}">
           <i class="fa-solid fa-magnifying-glass"></i> Vista Previa
         </a>
         <div class="card-body">
           <input type="hidden" value="{{producto.0}}">
           <h5 class="card-title">{{producto.1}}</h5>
-          <p class="card-text">{{producto.2}}</p>
+          <p id="scroll_descripcion" class="card-text">{{producto.2}}</p>
         </div>
       </div>
     </div>
     <!--INCIO:Detalle producto-->
-    <div class="modal fade" id="detalleProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="detalleProducto{{producto.0}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
           <div class="modal-body">
             <input type="hidden" value="{{producto.0}}">
             <form action="" method="post" enctype="multipart/form-data">
@@ -75,12 +72,11 @@
                 <img class="card-img-top img-thumbnail" src="uploads/{{producto.3}}">
               </div>
               <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-               <h1>{{producto.1}}</h1>
+                <h1>{{producto.1}}</h1>
               </div>
               <div class="mb-3">
                 <label for="descripcion" class="form-label">Descripción</label>
-                <p>{{producto.2}}</p>
+                <p id="descripcion">{{producto.2}}</p>
               </div>
               <div class="mb-3">
                 <label for="cantidad" class="form-label">Cantidad</label>
