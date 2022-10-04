@@ -1,4 +1,3 @@
-from cgitb import reset
 from flask import Flask, render_template, url_for,request,redirect,flash
 from flask_cors import CORS
 from flask_mysqldb import MySQL
