@@ -1,7 +1,7 @@
 #mostrar_detalle{
    display: none;
    position: absolute;
-   bottom: 30%;
+   bottom: 42%;
     
 }
 #img_card_header{
@@ -16,8 +16,15 @@
     display: flex;
     transition: 2s;
 }
+#img_card_header:hover{
+    background-color: rgb(190, 199, 151,90%);
+}
 .img-thumbnail {
     height: 80%;
+}
+#carrito:hover{
+    color: white;
+    background-color: orange;
 }
 
 

@@ -5,7 +5,7 @@
 <div class="container">
 
   <br>
-  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#formModalProducto">
+  <button id="nuevo" type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#formModalProducto">
     Nuevo Producto
   </button>
   <!--INCIO: Nuevo producto-->
@@ -17,23 +17,41 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="{{url_for('insertarProducto')}}" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-              <label for="codigo" class="form-label">Codigo Producto</label>
-              <input type="text" class="form-control" name="codigo" id="codigo">
+          <form class="container" action="{{url_for('insertarProducto')}}" method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <label for="codigo" class="form-label">Codigo Producto</label>
+                <input type="text" class="form-control" name="codigo" id="codigo">
+              </div>
+              <div class="col-sm-8">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" id="nombre">
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" class="form-control" name="nombre" id="nombre">
+            <div class="row mt-3">
+              <div class="col-sm-6">
+                <label for="precio_lista">Precio Lista S/.</label>
+                <input type="text" class="form-control" name="precio_lista" id="precio_lista">
+              </div>
+              <div class=" col-sm-6">
+                <label for="tamaño">Tamaño</label>
+                <input type="number" class="form-control" min="1" max="20" name="tamano" id="tamano">
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="descripcion" class="form-label">Descripción</label>
-              <textarea class="form-control" name="descripcion" placeholder="Descripción del producto"
-                style="height: 100px"></textarea>
+            <div class="row mt-3">
+              <div class="col-sm-6">
+                <select class="form-select" name="tipo_envase">
+                  {%for option in listaEnvase%}
+                  <option>{{option}}</option>
+                  {%endfor%}
+                </select>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="foto" class="form-label">Foto</label>
-              <input type="file" class="form-control" name="foto" id="foto">
+            <div class="row mb-3 mt-3">
+              <div class="col-sm-12">
+                <label for="foto" class="form-label">Foto</label>
+                <input type="file" class="form-control" name="foto" id="foto">
+              </div>
             </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
           </form>
@@ -43,44 +61,79 @@
     </div>
   </div>
   <!--FIN: Nuevo producto-->
-
   <div class="row row-cols-2 row-cols-md-4 g-4 mb-3">
-    {% for producto in productos%}
+
+    {% for producto in listaProductos%}
     <div class="col">
       <div class="card h-100" id="img_card_header">
-        <img width="50" height="50" class=" card-img-top img-thumbnail"  src="uploads/{{producto.3}}">
+        <img width="50" height="50" class=" card-img-top img-thumbnail" src="uploads/{{producto.foto}}">
         <a id="mostrar_detalle" type="button" class="btn btn-primary" data-link-action="quickview"
-          data-bs-toggle="modal" data-bs-target="#detalleProducto{{producto.0}}">
+          data-bs-toggle="modal" data-bs-target="#detalleProducto{{producto.codigo}}">
           <i class="fa-solid fa-magnifying-glass"></i> Vista Previa
         </a>
-        <div class="card-body">
-          <input type="hidden" value="{{producto.0}}">
-          <h5 class="card-title">{{producto.1}}</h5>
+        <div class="card-body text-center">
+          <input type="hidden" value="{{producto.codigo}}">
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="h6">{{producto.nombre}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="h6"><kbd class="bg-dark">S/.{{producto.precio_lista}}</kbd> </p>
+            </div>
+          </div>
+          <div class="row">
+            {% if producto.estado == 1 %}
+            <div class="col-sm-12 text-center">
+              <p class="h6"><kbd class="bg-success">Disponible</kbd> </p>
+            </div>
+            {% else %}
+            <div class="col-sm-12 text-center">
+              <p class="h6"><kbd class="bg-warning">Agotado</kbd> </p>
+            </div>
+            {% endif %}
+          </div>
+
         </div>
       </div>
     </div>
     <!--INCIO:Detalle producto-->
-    <div class="modal fade" id="detalleProducto{{producto.0}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="detalleProducto{{producto.codigo}}" tabindex="-1" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
-            <input type="hidden" value="{{producto.0}}">
+            <input type="hidden" value="{{producto.codigo}}">
 
-            <div class="card mb-3" style="max-width: 540px;">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img class="card-img-top img-thumbnail" src="uploads/{{producto.3}}">
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">{{producto.1}}</h5>
-                    <p class="card-text">{{producto.2}}</p>
-                    <a type="button" class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al
-                      carrito</a>
+            <div class="card p-1" style="max-width: 540px;">
+                <form class="row g-0">
+                  <div class="col-md-5">
+                    <img class="card-img-top img-thumbnail" src="uploads/{{producto.foto}}">
                   </div>
-                </div>
-              </div>
+                  <div class="col-md-7">
+                    <div class="card-body">
+                      <input type="hidden" name="codigo" value="{{producto.codigo}}">
+                      <h5 class="card-title" >{{producto.nombre}}</h5>
+                      <input type="hidden" name="nombre" value="{{producto.nombre}}">
+                      <input type="hidden" name="precio" value="{{producto.precio_lista}}">
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                      <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text" id="cantidad">Cantidad a comprar</span>
+                        <input type="number" class="form-control" name="cantidad" id="cantidad" min="1">
+                      </div>
+                      <p class="card-text"><small class="text-muted">Añade el producto para comprarlo</small></p>
+                      <kbd class="col-sm-2 bg-success">S/.{{producto.precio_lista}}</kbd>
+                      {% if producto.estado == 1 %}
+                      <kbd class="col-sm-4 bg-success">Producto disponible</kbd>
+                      {%else%}
+                      <kbd class="col-sm-4 bg-warning">Producto agotado</kbd>
+                      {% endif%}
+                    </div>
+                  </div>
+                  <button  type="submit"  id="agregarAlCarrito"  class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al carrito</button>
+                </form>
             </div>
           </div>
 

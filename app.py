@@ -6,7 +6,10 @@ from datetime import datetime
 from flask import send_from_directory
 import os
 #FIN: mostrar foto
+from localStoragePy import localStoragePy
+from funciones import convertirDataDictianry
 
+localStorage = localStoragePy('app')
 app= Flask(__name__)
 app.secret_key = 'many random bytes'
 
@@ -105,15 +108,19 @@ def actualizarEmpleado():
 def insertarProducto():
      codigo= request.form['codigo']
      nombre=request.form['nombre']
-     descripcion=request.form['descripcion']
+     tipo_envase=request.form['tipo_envase']
+     precio_lista=request.form['precio_lista']
+     tamaño=request.form['tamano']
      img=request.files['foto']
+     estado=1
      now= datetime.now()
      tiempo=now.strftime("%Y%H%M%S")
      if img.filename !='':
          nuevoNombreFoto=tiempo+img.filename
          img.save("uploads/"+nuevoNombreFoto)
      cursor= mysql.connection.cursor()
-     cursor.execute('INSERT INTO producto VALUES(%s,%s,%s,%s)',(codigo,nombre,descripcion,nuevoNombreFoto))
+     sql="INSERT INTO producto VALUES(%s,%s,%s,%s,%s, %s,%s);"
+     cursor.execute(sql,(codigo,nombre,tamaño,tipo_envase,precio_lista ,estado,nuevoNombreFoto))
      mysql.connection.commit()
      return redirect('/')
 #FIN: Agregar productos
@@ -122,14 +129,34 @@ def insertarProducto():
 #INICIO: Listar productos
 @app.route('/', methods=['GET'])
 def mostrarProductos():
+    listaEnvase=['Seleccione','Plastico','Vidrio','Caja']
     cursor= mysql.connection.cursor()
     sql='SELECT * FROM producto'
     cursor.execute(sql)
     data =cursor.fetchall()
-    cursor.close()
-    return render_template('productos/producto.html',productos=data)
+    #INCIO:conviertiendo a un diccionario la data
+    keys=['codigo','nombre','tamaño','envase','precio_lista','estado','foto']
+    resultado =convertirDataDictianry(data,keys)
+    #FIN: conviertiendo a un diccionario la data
+
+    return render_template('productos/producto.html',listaEnvase=listaEnvase, listaProductos=resultado)
 #FIN: Listar productos
 
+#INICIO: añadir al carrito
+@app.route('/añadirCarrito' ,methods=['POST'])
+def agregarAlCarrito():
+    codigo=request.form['codigo']
+    nombre=request.form['nombre']
+    precio=request.form['precio']
+    cantidad=request.form['cantidad']
+    precio_total= float(cantidad) * float(precio)
+    keys=['codigo','nombre','precio','cantidad' ,'precio_total']
+    producto=[codigo,nombre,precio,cantidad,precio_total]
+    productosSeleccionados=[]
+    productosSeleccionados.append(dict(zip(keys, producto)))
+    print(f'productosSeleccionados:{productosSeleccionados}')
+    return redirect('/')
+#FIN: añadir al carrito
 
 if __name__ == '__main__':
     app.run(debug=True)
