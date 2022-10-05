@@ -6,10 +6,6 @@ from datetime import datetime
 from flask import send_from_directory
 import os
 #FIN: mostrar foto
-from localStoragePy import localStoragePy
-from funciones import convertirDataDictianry
-
-localStorage = localStoragePy('app')
 app= Flask(__name__)
 app.secret_key = 'many random bytes'
 
@@ -157,6 +153,17 @@ def agregarAlCarrito():
     print(f'productosSeleccionados:{productosSeleccionados}')
     return redirect('/')
 #FIN: añadir al carrito
+#Funcion que convierte
+def convertirDataDictianry(data, listKeys):
+    lista= list(data)
+    keys=[]
+    for key in listKeys:
+        keys.append(key)
+    nueva_lista=[]
+    for producto in lista:
+        nueva_lista.append(producto)
+        resultado = [ dict(zip(keys, i)) for i in nueva_lista ]
+    return resultado
 
 if __name__ == '__main__':
     app.run(debug=True)
