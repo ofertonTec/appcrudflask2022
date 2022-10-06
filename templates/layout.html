@@ -31,11 +31,63 @@
             <a class="nav-link" href="{{url_for('mostrarEmpleados')}}">Empleados</a>
           </li>
         </ul>
-        <button id="carrito" type="button" class="btn btn-primary">
+        <button id="carrito" type="button" class="btn btn-primary" data-bs-toggle="modal"
+          data-bs-target="#exampleModal">
           <i class="fa-solid fa-cart-shopping"></i>
-          <span class="badge bg-danger rounded-pill">14</span> 
+          <span class="badge bg-danger rounded-pill">{{cantidadSelec}}</span>
         </button>
-       
+        <!--Inicio modal carrito-->
+        <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen-xxl-down">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Productos Seleccionados</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+
+                  {%for product in seleccionados%}
+                  <div id="card_lista" class="card mb-3 ">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img width="50" height="50" class=" img-thumbnail col-sm-3" src="uploads/{{product.foto}}">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <div class="row text-center">
+                            <div class="col-sm-3">
+                              <h5>{{product.nombre}}</h5>
+                              <p class="card-text">S/.{{product.precio}}</p>
+                            </div>
+                            <div class="col-sm-3">
+                              Cantidad:
+                              <input type="number" value="{{product.cantidad}}">
+                            </div>
+                            <div class="col-sm-6">
+                               Total:
+                              <p class="">S/.{{product.precio_total}}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {%endfor%}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                <button type="button" class="btn btn-primary">Comprar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--fin modal carrito-->
+
       </div>
 
     </div>
@@ -43,14 +95,15 @@
   {%block body%}
 
   {%endblock%}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js" integrity="sha512-CX7sDOp7UTAq+i1FYIlf9Uo27x4os+kGeoT7rgwvY+4dmjqV0IuE/Bl5hVsjnQPQiTOhAX1O2r2j5bjsFBvv/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
     integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
     crossorigin="anonymous"></script>
 
-    <!--mis archivos css-->
-    <script src="{{url_for('static' , filename='js/base.js')}}"></script>
-    
+  <!--mis archivos css-->
+  <script src="{{url_for('static' , filename='js/base.js')}}"></script>
+
 </body>
 
 </html>

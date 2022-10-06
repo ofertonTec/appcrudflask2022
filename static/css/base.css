@@ -26,7 +26,13 @@
     color: white;
     background-color: orange;
 }
-
+#card_lista:hover{
+    background-color: rgb(77, 80, 79);
+    color: white;
+}
+#card_lista{
+    background-color: rgb(226, 226, 226);
+}
 
 
 

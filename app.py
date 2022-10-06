@@ -18,7 +18,7 @@ app.config['MYSQL_USER'] = 'b8e78062f3909c'
 app.config['MYSQL_PASSWORD'] = '64532001'
 app.config['MYSQL_DB'] = 'heroku_631eb2166968388'
 CORS(app)
-
+productosSeleccionados=[]
 #INICIO: Mostrar la foto
 CARPETA= os.path.join('uploads')
 app.config['CARPETA']=CARPETA
@@ -130,12 +130,16 @@ def mostrarProductos():
     sql='SELECT * FROM producto'
     cursor.execute(sql)
     data =cursor.fetchall()
+    if(len(productosSeleccionados)!=0):
+        productosSeleccionados
+        
     #INCIO:conviertiendo a un diccionario la data
     keys=['codigo','nombre','tamaño','envase','precio_lista','estado','foto']
     resultado =convertirDataDictianry(data,keys)
     #FIN: conviertiendo a un diccionario la data
-
-    return render_template('productos/producto.html',listaEnvase=listaEnvase, listaProductos=resultado)
+    seleccion=len(productosSeleccionados)
+    return render_template('productos/producto.html',listaEnvase=listaEnvase, 
+    listaProductos=resultado, seleccionados=productosSeleccionados, cantidadSelec= seleccion)
 #FIN: Listar productos
 
 #INICIO: añadir al carrito
@@ -148,11 +152,13 @@ def agregarAlCarrito():
     precio_total= float(cantidad) * float(precio)
     keys=['codigo','nombre','precio','cantidad' ,'precio_total']
     producto=[codigo,nombre,precio,cantidad,precio_total]
-    productosSeleccionados=[]
     productosSeleccionados.append(dict(zip(keys, producto)))
+    print(f'Cantidad de productos agreagado:{productosSeleccionados}')
     print(f'productosSeleccionados:{productosSeleccionados}')
     return redirect('/')
 #FIN: añadir al carrito
+
+
 #Funcion que convierte
 def convertirDataDictianry(data, listKeys):
     lista= list(data)
