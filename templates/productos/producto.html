@@ -9,6 +9,17 @@
     data-bs-target="#formModalProducto">
     Nuevo Producto
   </button>
+  {%with messages = get_flashed_messages()%}
+  {%if messages%}
+  {% for message in messages %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {%endfor%}
+  {%endif%}
+  {%endwith%}
+
   <!--INCIO: Nuevo producto-->
   <div class="modal fade" id="formModalProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -140,8 +151,8 @@
             <button id="cerrarModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button data-bs-target="#ProductoAgregado" onclick="agregarCarrito(event,'{{producto.codigo}}','{{producto.nombre}}','{{producto.precio_lista}}','{{producto.foto}}')" type="button" class="btn btn-primary"><i
                 class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al carrito</button>
+            <a href="/agregarProductoAlCarrito/{{producto.codigo}}">AGREAGAR</a>
           </div>
-
         </div>
       </div>
     </div>

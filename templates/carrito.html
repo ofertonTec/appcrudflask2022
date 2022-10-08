@@ -1,0 +1,33 @@
+{% extends './layout.html'%}
+
+{%block title%}Carrito{% endblock%}
+
+{%block body%}
+
+<div class="container">
+    <ul class="list-group list-group-flush p-2">
+        {% for producto in listaSeleccionados%}
+        <li class="list-group-item  d-flex flex-direction-column content-fit p-0">
+            <div class="col p-3">
+                <img width="70%" class="img-thumbnail" src="/uploads/{{producto.foto}}" alt="">
+            </div>
+            <div class="col p-1"><strong>{{producto.nombre}}</strong> 
+            </div>
+            <div class="col p-1">
+                 S/.<kbd class="bg-success">{{producto.precio_lista}}</kbd>
+            </div>
+            <div class="col p-1">
+                <a href="/eliminarItem/{{producto.codigo}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash p-1"></i>Eliminar </a>
+            </div>
+        </li>
+        {%endfor%}
+      </ul>
+      <div class="p-5">
+        <a href="{{url_for('mostrarProductos')}}" class="btn btn-outline-dark"><i class="fa-sharp fa-solid fa-arrow-left"></i>Atras</a>
+        <button class="btn btn-outline-success"> <i class="fa-sharp fa-solid fa-shop"></i></i> Comprar </button>
+      </div>
+       
+
+</div>
+
+{%endblock%}

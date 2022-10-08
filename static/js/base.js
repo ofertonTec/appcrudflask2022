@@ -113,11 +113,21 @@ function mostrarListProductSelect(data) {
             // <button id="eliminar_item" class="btn  btn-light"> <i class="fa-solid fa-trash"> </i> </button>
             eliminar_item = document.createElement('button')
             eliminar_item.classList.add('btn', 'btn-light')
+
+            //
+            eliminar_item.innerHTML = "Eliminar";
+            eliminar_item.onclick = function(event) {
+                event.preventDefault()
+                eliminarItem(codigo)
+            };
+            //
             // icon
             icono = document.createElement('i')
             icono.classList.add('fa-solid', 'fa-trash')
 
             item_button.appendChild(eliminar_item)
+            item_button.id="item/"+codigo
+            
             eliminar_item.appendChild(icono)
 
             //ORDENANDO LOS VALORES
@@ -131,7 +141,10 @@ function mostrarListProductSelect(data) {
         
     }
 }
+function eliminarItem(codigo){
+    alert('Selecciono el elemento con codigo: ' + codigo)
 
+}
 /*function agregarCarrito(event, codigo, nombre, precio_lista, foto) {
     event.preventDefault()
     codsProductosSeleccionados.push(codigo)

@@ -29,6 +29,12 @@ def uploads(nombreFoto):
 #FIN: Mostrar la foto 
 
 mysql= MySQL(app)
+
+#********************VARIABLES GLOBALES*********************#
+listaProductos=[]
+listaProductosSelecionados=[]
+
+
 @app.route('/')
 def iniciarApp():
     return mostrarProductos()
@@ -99,7 +105,7 @@ def actualizarEmpleado():
 #FIN: Editar empleado
 
 
-
+#**************************************INICIO: GESTIONAR PRODUCTOS***********************#
 #INICIO: Agregar productos
 @app.route('/producto' ,methods=['POST'])
 def insertarProducto():
@@ -122,10 +128,10 @@ def insertarProducto():
      return redirect('/')
 #FIN: Agregar productos
 
-dictProductos=[]
 #INICIO: Listar productos
 @app.route('/', methods=['GET'])
 def mostrarProductos():
+    listaProductos.clear()
     listaEnvase=['Seleccione','Plastico','Vidrio','Caja']
     cursor= mysql.connection.cursor()
     sql='SELECT * FROM producto'
@@ -134,11 +140,67 @@ def mostrarProductos():
     #INCIO:conviertiendo a un diccionario la data
     keys=['codigo','nombre','tamaño','envase','precio_lista','estado','foto']
     resultado =convertirDataDictianry(data,keys)
-    dictProductos.append(resultado)
+    listaProductos.append(resultado)
+    print(f'listaProductos:{listaProductos}')
     #FIN: conviertiendo a un diccionario la data
     return render_template('productos/producto.html',listaEnvase=listaEnvase, 
     listaProductos=resultado)
 #FIN: Listar productos
+
+@app.route('/carrito')
+def carrito():
+    print(f'listaProductos:{listaProductos}')
+    return render_template('carrito.html',listaSeleccionados= listaProductosSelecionados)
+
+@app.route('/agregarProductoAlCarrito/<string:codigo>' ,methods=['GET'])
+def agregarProductoAlCarrito(codigo):
+    if (listaProductosSelecionados) !=0:
+        print(f'la lista seleccionados esta vacia:{listaProductosSelecionados}')
+    print(f'CodigoSeleccionado: {codigo}')
+    lista =convertirListaDictionary()
+    traerProductoDeListaGeneral(codigo, lista)
+    
+    return redirect('/')
+
+@app.route('/eliminarItem/<string:codigo>', methods=['GET'])
+def eliminarItem(codigo):
+    print(f'COdigo a eliminar:{codigo}')
+    contador=0
+    for producto in listaProductosSelecionados:
+        seleccion=producto['codigo'] == codigo
+        if(seleccion):
+            listaProductosSelecionados.pop(contador)
+        contador+=1
+
+    return redirect('/carrito')
+#**************************************FIN: GESTIONAR PRODUCTOS***********************#
+
+def traerProductoDeListaGeneral(codigo,productos):
+  for producto in productos:
+    criterioSeleccion= producto['codigo'] == codigo
+    if(criterioSeleccion):
+      existe =verificarEnProductosSeleccionados(codigo)
+      if len(existe) == 0:
+          listaProductosSelecionados.append(producto)
+      else:
+          flash('El producto ya ha sido añadido al carrito de compras')
+##########################################
+def verificarEnProductosSeleccionados(codigoIngresado):
+    existe=[]
+    existe.clear()
+    if len(listaProductosSelecionados) !=0:
+        for producto in listaProductosSelecionados:
+            if(producto['codigo'] == codigoIngresado):
+                existe.append(True)
+    return existe
+    
+##########################################
+def convertirListaDictionary():
+    lista=[]
+    for pro in listaProductos:
+        for item in pro:
+            lista.append(item)
+    return lista
 
 def convertirDataDictianry(data, listKeys):
     lista= list(data)
