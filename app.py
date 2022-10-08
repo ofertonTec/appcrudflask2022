@@ -1,4 +1,6 @@
-from flask import Flask, render_template, url_for,request,redirect,flash
+from email.mime import image
+from flask import Flask, render_template, url_for,request,redirect,flash,jsonify
+import json
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 #INICIO: mostrar foto
@@ -18,7 +20,6 @@ app.config['MYSQL_USER'] = 'b8e78062f3909c'
 app.config['MYSQL_PASSWORD'] = '64532001'
 app.config['MYSQL_DB'] = 'heroku_631eb2166968388'
 CORS(app)
-productosSeleccionados=[]
 #INICIO: Mostrar la foto
 CARPETA= os.path.join('uploads')
 app.config['CARPETA']=CARPETA
@@ -121,7 +122,7 @@ def insertarProducto():
      return redirect('/')
 #FIN: Agregar productos
 
-
+dictProductos=[]
 #INICIO: Listar productos
 @app.route('/', methods=['GET'])
 def mostrarProductos():
@@ -130,36 +131,15 @@ def mostrarProductos():
     sql='SELECT * FROM producto'
     cursor.execute(sql)
     data =cursor.fetchall()
-    if(len(productosSeleccionados)!=0):
-        productosSeleccionados
-        
     #INCIO:conviertiendo a un diccionario la data
     keys=['codigo','nombre','tamaño','envase','precio_lista','estado','foto']
     resultado =convertirDataDictianry(data,keys)
+    dictProductos.append(resultado)
     #FIN: conviertiendo a un diccionario la data
-    seleccion=len(productosSeleccionados)
     return render_template('productos/producto.html',listaEnvase=listaEnvase, 
-    listaProductos=resultado, seleccionados=productosSeleccionados, cantidadSelec= seleccion)
+    listaProductos=resultado)
 #FIN: Listar productos
 
-#INICIO: añadir al carrito
-@app.route('/añadirCarrito' ,methods=['POST'])
-def agregarAlCarrito():
-    codigo=request.form['codigo']
-    nombre=request.form['nombre']
-    precio=request.form['precio']
-    cantidad=request.form['cantidad']
-    precio_total= float(cantidad) * float(precio)
-    keys=['codigo','nombre','precio','cantidad' ,'precio_total']
-    producto=[codigo,nombre,precio,cantidad,precio_total]
-    productosSeleccionados.append(dict(zip(keys, producto)))
-    print(f'Cantidad de productos agreagado:{productosSeleccionados}')
-    print(f'productosSeleccionados:{productosSeleccionados}')
-    return redirect('/')
-#FIN: añadir al carrito
-
-
-#Funcion que convierte
 def convertirDataDictianry(data, listKeys):
     lista= list(data)
     keys=[]

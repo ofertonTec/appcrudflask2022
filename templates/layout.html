@@ -47,38 +47,29 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Productos Seleccionados</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body">
-                <div class="container">
-
-                  {%for product in seleccionados%}
-                  <div id="card_lista" class="card mb-3 ">
-                    <div class="row g-0">
-                      <div class="col-md-4">
-                        <img width="50" height="50" class=" img-thumbnail col-sm-3" src="uploads/{{product.foto}}">
-                      </div>
-                      <div class="col-md-8">
-                        <div class="card-body">
-                          <div class="row text-center">
-                            <div class="col-sm-3">
-                              <h5>{{product.nombre}}</h5>
-                              <p class="card-text">S/.{{product.precio}}</p>
-                            </div>
-                            <div class="col-sm-3">
-                              Cantidad:
-                              <input type="number" value="{{product.cantidad}}">
-                            </div>
-                            <div class="col-sm-6">
-                               Total:
-                              <p class="">S/.{{product.precio_total}}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+              <form id="contenedorForm" class="modal-body">
+                <!--INICIO-->
+                <!--
+                <div id="items" class="row  text-center align-items-center border-bottom border-dark mb-3">
+                  <div id="item_imagen" class="col p-1">
+                    <img id="imagen_" width="150px" class="img-thumbnail" src="/uploads/2022093624IAUNTSN6SZA37BPTWR4AZBPZUM.jpg" >
                   </div>
-                  {%endfor%}
+                  <div id="item_precio" class="col p-1">
+                    s/.50
+                  </div>
+                  <div id="item_cantidad" class="col p-1">
+                    20
+                  </div>
+                  <div id="item_total" class="col p-1">
+                     s/.50
+                  </div>
+                  <div id="item_button" class="col p-1">
+                    <button id="eliminar_item" class="btn  btn-light"><i class="fa-solid fa-trash"></i></button>
+                  </div>
                 </div>
-              </div>
+               -->
+                <!--FIN-->
+              </form>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                 <button type="button" class="btn btn-primary">Comprar</button>
@@ -103,6 +94,7 @@
 
   <!--mis archivos css-->
   <script src="{{url_for('static' , filename='js/base.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 </body>
 

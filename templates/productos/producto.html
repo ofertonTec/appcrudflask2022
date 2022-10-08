@@ -5,7 +5,8 @@
 <div class="container">
 
   <br>
-  <button id="nuevo" type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#formModalProducto">
+  <button id="nuevo" type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
+    data-bs-target="#formModalProducto">
     Nuevo Producto
   </button>
   <!--INCIO: Nuevo producto-->
@@ -99,43 +100,46 @@
       </div>
     </div>
     <!--INCIO:Detalle producto-->
-    <div class="modal fade" id="detalleProducto{{producto.codigo}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
+    <div  class="modal fade miModal" data-bs-backdrop="static" id="detalleProducto{{producto.codigo}}" tabindex="-1"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog ">
+        <div class="modal-content" id="detalleProducto">
+          <input id="codigoProducto" type="hidden" disabled value="{{producto.codigo}}">
+          <div id="_alert_personalizada" class="modal-header">
+          </div>
           <div class="modal-body">
-            <input type="hidden" value="{{producto.codigo}}">
-
+            <input id="codigoProducto" type="hidden" value="{{producto.codigo}}">
             <div class="card p-1" style="max-width: 540px;">
-                <form class="row g-0" method="post" action="{{url_for('agregarAlCarrito')}}">
-                  <div class="col-md-5">
-                    <input type="hidden" value="{{producto.foto}}">
-                    <img class="card-img-top img-thumbnail" src="uploads/{{producto.foto}}">
+              <form id="formCarrito" class="row g-0">
+                <div class="col-md-5">
+                  <img class="card-img-top img-thumbnail" src="uploads/{{producto.foto}}">
+                </div>
+                <div class="col-md-7">
+                  <div class="card-body">
+                    <input type="hidden" name="codigo" value="{{producto.codigo}}">
+                    <h5 class="card-title">{{producto.nombre}}</h5>
+                    <input id="nombreProducto" type="hidden" name="nombre" value="{{producto.nombre}}">
+                    <input type="hidden" name="precio" value="{{producto.precio_lista}}">
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                      additional content. This content is a little bit longer.</p>
+                    <input type="number" onchange="escucharInput(event)" class="form-control" min="1" id="cantidadTotal"
+                      placeholder="Cantidad">
+                    <p class="card-text"><small class="text-muted">Añade el producto para comprarlo</small></p>
+                    <kbd class="col-sm-2 bg-success">S/.{{producto.precio_lista}}</kbd>
+                    {% if producto.estado == 1 %}
+                    <kbd class="col-sm-4 bg-success">Producto disponible</kbd>
+                    {%else%}
+                    <kbd class="col-sm-4 bg-warning">Producto agotado</kbd>
+                    {% endif%}
                   </div>
-                  <div class="col-md-7">
-                    <div class="card-body">
-                      <input type="hidden" name="codigo" value="{{producto.codigo}}">
-                      <h5 class="card-title" >{{producto.nombre}}</h5>
-                      <input type="hidden" name="nombre" value="{{producto.nombre}}">
-                      <input type="hidden" name="precio" value="{{producto.precio_lista}}">
-                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This content is a little bit longer.</p>
-                      <div class="input-group input-group-sm mb-3">
-                        <span class="input-group-text" id="cantidad">Cantidad a comprar</span>
-                        <input type="number" class="form-control" name="cantidad" id="cantidad" min="1">
-                      </div>
-                      <p class="card-text"><small class="text-muted">Añade el producto para comprarlo</small></p>
-                      <kbd class="col-sm-2 bg-success">S/.{{producto.precio_lista}}</kbd>
-                      {% if producto.estado == 1 %}
-                      <kbd class="col-sm-4 bg-success">Producto disponible</kbd>
-                      {%else%}
-                      <kbd class="col-sm-4 bg-warning">Producto agotado</kbd>
-                      {% endif%}
-                    </div>
-                  </div>
-                  <button  type="submit"   class="btn btn-primary"><i class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al carrito</button>
-                </form>
+                </div>
+              </form>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button id="cerrarModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button data-bs-target="#ProductoAgregado" onclick="agregarCarrito(event,'{{producto.codigo}}','{{producto.nombre}}','{{producto.precio_lista}}','{{producto.foto}}')" type="button" class="btn btn-primary"><i
+                class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al carrito</button>
           </div>
 
         </div>
