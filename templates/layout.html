@@ -31,12 +31,14 @@
             <a class="nav-link" href="{{url_for('mostrarEmpleados')}}">Empleados</a>
           </li>
         </ul>
-        <button id="carrito" type="button" class="btn btn-primary" data-bs-toggle="modal"
+       <!--<button id="carrito" type="button" class="btn btn-primary" data-bs-toggle="modal"
           data-bs-target="#exampleModal">
           <i class="fa-solid fa-cart-shopping"></i>
           <span class="badge bg-danger rounded-pill">{{cantidadSelec}}</span>
-        </button>
-        <a href="{{url_for('carrito')}}">carrito</a>
+        </button>-->
+        
+        <a class="btn btn-success" href="{{url_for('carrito')}}"><i class="fa-solid fa-cart-shopping"></i>Shop 
+          <span class="badge bg-danger rounded-pill">{{cantidad}}</span></a>
         <!--Inicio modal carrito-->
         <!-- Button trigger modal -->
 

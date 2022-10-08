@@ -136,7 +136,7 @@
                     <input type="number" onchange="escucharInput(event)" class="form-control" min="1" id="cantidadTotal"
                       placeholder="Cantidad">
                     <p class="card-text"><small class="text-muted">Añade el producto para comprarlo</small></p>
-                    <kbd class="col-sm-2 bg-success">S/.{{producto.precio_lista}}</kbd>
+                    <kbd class="col-sm-2 bg-info">S/.{{producto.precio_lista}}</kbd>
                     {% if producto.estado == 1 %}
                     <kbd class="col-sm-4 bg-success">Producto disponible</kbd>
                     {%else%}
@@ -148,10 +148,11 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button id="cerrarModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button data-bs-target="#ProductoAgregado" onclick="agregarCarrito(event,'{{producto.codigo}}','{{producto.nombre}}','{{producto.precio_lista}}','{{producto.foto}}')" type="button" class="btn btn-primary"><i
-                class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al carrito</button>
-            <a href="/agregarProductoAlCarrito/{{producto.codigo}}">AGREAGAR</a>
+            <button id="cerrarModal" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+         <!-- <button data-bs-target="#ProductoAgregado" onclick="agregarCarrito(event,'{{producto.codigo}}','{{producto.nombre}}','{{producto.precio_lista}}','{{producto.foto}}')" type="button" class="btn btn-primary"><i
+                class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al carrito</button>-->  
+            <a class="btn btn-outline-primary" href="/agregarProductoAlCarrito/{{producto.codigo}}"><i
+              class="fa-sharp fa-solid fa-cart-shopping"></i> Agregar al carrito</a>
           </div>
         </div>
       </div>

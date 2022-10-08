@@ -141,15 +141,18 @@ def mostrarProductos():
     keys=['codigo','nombre','tamaño','envase','precio_lista','estado','foto']
     resultado =convertirDataDictianry(data,keys)
     listaProductos.append(resultado)
+    cantidadSelec =len(listaProductosSelecionados)
+    
     print(f'listaProductos:{listaProductos}')
     #FIN: conviertiendo a un diccionario la data
     return render_template('productos/producto.html',listaEnvase=listaEnvase, 
-    listaProductos=resultado)
+    listaProductos=resultado,cantidad= cantidadSelec )
 #FIN: Listar productos
 
 @app.route('/carrito')
 def carrito():
     print(f'listaProductos:{listaProductos}')
+    
     return render_template('carrito.html',listaSeleccionados= listaProductosSelecionados)
 
 @app.route('/agregarProductoAlCarrito/<string:codigo>' ,methods=['GET'])
