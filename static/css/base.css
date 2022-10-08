@@ -33,5 +33,8 @@
 #card_lista{
     background-color: rgb(226, 226, 226);
 }
+#list_items:hover{
+    background-color: antiquewhite;
+}
 
 

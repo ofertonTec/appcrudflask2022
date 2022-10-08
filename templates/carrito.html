@@ -7,9 +7,9 @@
 <div class="container">
     <ul class="list-group list-group-flush p-2">
         {% for producto in listaSeleccionados%}
-        <li class="list-group-item  d-flex flex-direction-column content-fit p-0">
+        <li id="list_items" class="list-group-item  d-flex flex-direction-column justify-content-center align-items-center p-0">
             <div class="col p-3">
-                <img width="70%" class="img-thumbnail" src="/uploads/{{producto.foto}}" alt="">
+                <img width="50%" class="img-thumbnail" src="/uploads/{{producto.foto}}" alt="">
             </div>
             <div class="col p-1"><strong>{{producto.nombre}}</strong> 
             </div>
@@ -17,7 +17,7 @@
                  S/.<kbd class="bg-success">{{producto.precio_lista}}</kbd>
             </div>
             <div class="col p-1">
-                <a href="/eliminarItem/{{producto.codigo}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash p-1"></i>Eliminar </a>
+                <a href="/eliminarItem/{{producto.codigo}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash p-1"></i></a>
             </div>
         </li>
         {%endfor%}
