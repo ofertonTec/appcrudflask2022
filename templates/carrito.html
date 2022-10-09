@@ -23,7 +23,7 @@
             <td>{{producto.nombre}}</td>
             <td>{{producto.cantidad}}</td>
             <td>S/.{{producto.precio_lista}}</td>
-            <td>S/.<kbd class="bg-dark">{{producto.total}}</kbd></td>
+            <td><kbd class="bg-dark">S/.{{producto.total}}</kbd></td>
             <td> <a href="/eliminarItem/{{producto.codigo}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash p-1"></i></a></td>
           </tr>
           {%endfor%}
