@@ -5,7 +5,7 @@
 <div class="container">
 
   <br>
-  <button id="nuevo" type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
+  <button disabled id="nuevo" type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
     data-bs-target="#formModalProducto">
     Nuevo Producto
   </button>
@@ -65,6 +65,12 @@
                 <input type="file" class="form-control" name="foto" id="foto">
               </div>
             </div>
+            <div class="row mb-3 mt-3">
+              <div class="col-sm-12">
+                <label for="descripcion">Descripción</label>
+                <textarea class="form-control" name="descripcion" id="descripcion" cols="auto" rows="3"></textarea>
+              </div>
+            </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
           </form>
         </div>
@@ -111,13 +117,11 @@
       </div>
     </div>
     <!--INCIO:Detalle producto-->
-    <div  class="modal fade miModal" data-bs-backdrop="static" id="detalleProducto{{producto.codigo}}" tabindex="-1"
+    <div class="modal fade miModal" data-bs-backdrop="static" id="detalleProducto{{producto.codigo}}" tabindex="-1"
       aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog ">
         <div class="modal-content" id="detalleProducto">
           <input id="codigoProducto" type="hidden" disabled value="{{producto.codigo}}">
-          <div id="_alert_personalizada" class="modal-header">
-          </div>
           <div class="modal-body">
             <input id="codigoProducto" type="hidden" value="{{producto.codigo}}">
             <div class="card p-1" style="max-width: 540px;">
@@ -131,8 +135,7 @@
                     <h5 class="card-title">{{producto.nombre}}</h5>
                     <input id="nombreProducto" type="hidden" name="nombre" value="{{producto.nombre}}">
                     <input type="hidden" name="precio" value="{{producto.precio_lista}}">
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                      additional content. This content is a little bit longer.</p>
+                    <p class="card-text">{{producto.descripcion}}.</p>
                     <input type="number" onchange="escucharInput(event)" class="form-control" min="1" id="cantidadTotal"
                       placeholder="Cantidad">
                     <p class="card-text"><small class="text-muted">Añade el producto para comprarlo</small></p>
@@ -148,11 +151,14 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button id="cerrarModal" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-         <!-- <button data-bs-target="#ProductoAgregado" onclick="agregarCarrito(event,'{{producto.codigo}}','{{producto.nombre}}','{{producto.precio_lista}}','{{producto.foto}}')" type="button" class="btn btn-primary"><i
-                class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al carrito</button>-->  
-            <a class="btn btn-outline-primary" href="/agregarProductoAlCarrito/{{producto.codigo}}"><i
-              class="fa-sharp fa-solid fa-cart-shopping"></i> Agregar al carrito</a>
+            <button id="cerrarModal" type="button" class="btn btn-outline-secondary"
+              data-bs-dismiss="modal">Close</button>
+            <!-- <button data-bs-target="#ProductoAgregado" onclick="agregarCarrito(event,'{{producto.codigo}}','{{producto.nombre}}','{{producto.precio_lista}}','{{producto.foto}}')" type="button" class="btn btn-primary"><i
+                class="fa-sharp fa-solid fa-cart-shopping"></i> Añadir al carrito</button>-->
+            <!--<a class="btn btn-outline-primary" href="/agregarProductoAlCarrito/{{producto.codigo}}"><i
+              class="fa-sharp fa-solid fa-cart-shopping"></i> Agregar al carrito</a>-->
+            <a class="btn btn-success" href=""
+              onclick="validarEnvioCarrito(event,'{{producto.codigo}}')">agregarCarrito</a>
           </div>
         </div>
       </div>

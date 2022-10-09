@@ -115,6 +115,7 @@ def insertarProducto():
      precio_lista=request.form['precio_lista']
      tamaño=request.form['tamano']
      img=request.files['foto']
+     descripcion=request.form['descripcion']
      estado=1
      now= datetime.now()
      tiempo=now.strftime("%Y%H%M%S")
@@ -122,82 +123,93 @@ def insertarProducto():
          nuevoNombreFoto=tiempo+img.filename
          img.save("uploads/"+nuevoNombreFoto)
      cursor= mysql.connection.cursor()
-     sql="INSERT INTO producto VALUES(%s,%s,%s,%s,%s, %s,%s);"
-     cursor.execute(sql,(codigo,nombre,tamaño,tipo_envase,precio_lista ,estado,nuevoNombreFoto))
+     sql="INSERT INTO producto VALUES(%s,%s,%s,%s,%s, %s,%s,%s);"
+     cursor.execute(sql,(codigo,nombre,tamaño,tipo_envase,precio_lista ,estado,nuevoNombreFoto,descripcion))
      mysql.connection.commit()
      return redirect('/')
 #FIN: Agregar productos
-
+productosSleccionados=[]
 #INICIO: Listar productos
+mensajes=[]
 @app.route('/', methods=['GET'])
 def mostrarProductos():
-    listaProductos.clear()
+    for mensaje in mensajes:
+        flash(mensaje)
+    
+    if len(listaProductos) !=0:
+        listaProductos.clear()
     listaEnvase=['Seleccione','Plastico','Vidrio','Caja']
     cursor= mysql.connection.cursor()
     sql='SELECT * FROM producto'
     cursor.execute(sql)
     data =cursor.fetchall()
-    #INCIO:conviertiendo a un diccionario la data
-    keys=['codigo','nombre','tamaño','envase','precio_lista','estado','foto']
-    resultado =convertirDataDictianry(data,keys)
-    listaProductos.append(resultado)
-    cantidadSelec =len(listaProductosSelecionados)
-    
-    print(f'listaProductos:{listaProductos}')
-    #FIN: conviertiendo a un diccionario la data
-    return render_template('productos/producto.html',listaEnvase=listaEnvase, 
-    listaProductos=resultado,cantidad= cantidadSelec )
+    print(f'tipo  de la data:{type(data)}')
+    print(f'tamaño  de la data:{len(data)}')
+    keys=['codigo','nombre','tamaño','envase','precio_lista','estado','foto','descripcion']
+    if len(data)!=0:
+        resultado =convertirDataDictianry(data,keys)
+        listaProductos.append(resultado)
+        cantidadSelect =len(productosSleccionados)
+        return render_template('productos/producto.html',listaEnvase=listaEnvase,listaProductos=resultado,cantidadSelect= cantidadSelect )
+    else:
+        return render_template('productos/producto.html',listaEnvase=listaEnvase)
 #FIN: Listar productos
+
+@app.route('/ingresarProductoAlCarrito', methods=['GET','POST'])
+def ingresarProductoAlCarrito():
+    
+    codigo= request.args.get('codigo')
+    cantidad=request.args.get('cantidad')
+    #Verifico si el usuario ya ingreso el producto
+    if (len(productosSleccionados) == 0):
+        ##Completar producto y agreagar
+        reconstruirProducto(codigo,cantidad)
+    else:
+        ##Verificar si existe el producto en la lista de productos seleccionados
+        existe=[]
+        for producto in productosSleccionados:
+            if producto['codigo'] == codigo:
+                existe.append(True)
+        if len(existe)== 0:
+            #completar el producto y agreagr
+            reconstruirProducto(codigo,cantidad)
+        else :
+            mensajes.append('El producto ya ha sido añadido al carrito de compras') 
+    return jsonify(productosSleccionados)
+#________________________________________
+def reconstruirProducto(codigo,cantidad):
+    print(f'ListaProductos={listaProductos}')
+    listProducts=listaProductos[0]
+    for producto in listProducts:
+        seleccion = producto['codigo'] == codigo
+        if(seleccion):
+            precio =producto['precio_lista']
+            total=precio *int(cantidad)
+            producto['cantidad']=cantidad
+            producto['total']= round(total,2)
+            productosSleccionados.append(producto)
+#________________________________________
 
 @app.route('/carrito')
 def carrito():
-    print(f'listaProductos:{listaProductos}')
-    
-    return render_template('carrito.html',listaSeleccionados= listaProductosSelecionados)
+    mensajes.clear()
+    cantidadSelect=len(productosSleccionados)
+    return render_template('carrito.html',listaSeleccionados= productosSleccionados ,cantidadSelect=cantidadSelect)
 
-@app.route('/agregarProductoAlCarrito/<string:codigo>' ,methods=['GET'])
-def agregarProductoAlCarrito(codigo):
-    if (listaProductosSelecionados) !=0:
-        print(f'la lista seleccionados esta vacia:{listaProductosSelecionados}')
-    print(f'CodigoSeleccionado: {codigo}')
-    lista =convertirListaDictionary()
-    traerProductoDeListaGeneral(codigo, lista)
-    
-    return redirect('/')
 
 @app.route('/eliminarItem/<string:codigo>', methods=['GET'])
 def eliminarItem(codigo):
     print(f'COdigo a eliminar:{codigo}')
     contador=0
-    for producto in listaProductosSelecionados:
+    for producto in productosSleccionados:
         seleccion=producto['codigo'] == codigo
         if(seleccion):
-            listaProductosSelecionados.pop(contador)
+            productosSleccionados.pop(contador)
         contador+=1
 
     return redirect('/carrito')
 #**************************************FIN: GESTIONAR PRODUCTOS***********************#
 
-def traerProductoDeListaGeneral(codigo,productos):
-  for producto in productos:
-    criterioSeleccion= producto['codigo'] == codigo
-    if(criterioSeleccion):
-      existe =verificarEnProductosSeleccionados(codigo)
-      if len(existe) == 0:
-          listaProductosSelecionados.append(producto)
-      else:
-          flash('El producto ya ha sido añadido al carrito de compras')
-##########################################
-def verificarEnProductosSeleccionados(codigoIngresado):
-    existe=[]
-    existe.clear()
-    if len(listaProductosSelecionados) !=0:
-        for producto in listaProductosSelecionados:
-            if(producto['codigo'] == codigoIngresado):
-                existe.append(True)
-    return existe
-    
-##########################################
 def convertirListaDictionary():
     lista=[]
     for pro in listaProductos:
