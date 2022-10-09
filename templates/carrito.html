@@ -30,7 +30,12 @@
       </table>
       <div class="d-flex justify-content-between">
         <a href="{{url_for('mostrarProductos')}}" class="btn btn-outline-dark"><i class="fa-sharp fa-solid fa-arrow-left"></i>Atras</a>
-        <button class="btn btn-outline-success"> <i class="fa-sharp fa-solid fa-shop"></i></i> Comprar </button>
+        {% if cantidadSelect ==0 %}
+        <button disabled class="btn btn-outline-success"> <i class="fa-sharp fa-solid fa-shop"></i></i> Comprar </button>
+        {% else %}
+        <button  class="btn btn-outline-success"> <i class="fa-sharp fa-solid fa-shop"></i></i> Comprar </button>
+        {%endif%}
+
       </div>
        
 

@@ -32,8 +32,8 @@ mysql= MySQL(app)
 
 #********************VARIABLES GLOBALES*********************#
 listaProductos=[]
-listaProductosSelecionados=[]
-
+mensajes=[]
+productosSleccionados=[]
 
 @app.route('/')
 def iniciarApp():
@@ -128,9 +128,7 @@ def insertarProducto():
      mysql.connection.commit()
      return redirect('/')
 #FIN: Agregar productos
-productosSleccionados=[]
 #INICIO: Listar productos
-mensajes=[]
 @app.route('/', methods=['GET'])
 def mostrarProductos():
     for mensaje in mensajes:
@@ -157,7 +155,7 @@ def mostrarProductos():
 
 @app.route('/ingresarProductoAlCarrito', methods=['GET','POST'])
 def ingresarProductoAlCarrito():
-    
+    mensajes.clear()
     codigo= request.args.get('codigo')
     cantidad=request.args.get('cantidad')
     #Verifico si el usuario ya ingreso el producto
